@@ -13,5 +13,8 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="H:/Program Files/R/R-3.3.2/library/rJava/jri/JRI.jar"/>
+	<classpathentry kind="lib" path="H:/Program Files/R/R-3.3.2/library/rJava/jri/JRIEngine.jar"/>
+	<classpathentry kind="lib" path="H:/Program Files/R/R-3.3.2/library/rJava/jri/REngine.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
