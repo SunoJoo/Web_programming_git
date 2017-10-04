@@ -9,43 +9,81 @@ import java.io.UnsupportedEncodingException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 
 public class Twitter {
-   private WebDriver driver;
+   /*private WebDriver driver;
    private String tagSite, tagName, data, contexts;
    private BufferedWriter contextText;
    private String driverLink = "C:\\Users\\kingt\\Documents\\라이브러리 크롤러\\chromedriver.exe"; //chromedriver.exe 경로
-   
-   public Twitter(String string) {
-	   try {
+   */
+	protected String mainUrl;
+	protected String URL;
+	protected Document doc;
+	
+   public Twitter(String branch) throws Exception{
+	   mainUrl = "http://media.daum.net";
+	   URL = mainUrl+"/breakingnews/"+branch;
+	   //String URL = "https://search.daum.net/search?w=news&nil_search=btn&DA=NTB&enc=utf8&cluster=y&cluster_page=1&q=%EB%AC%B8%EC%9E%AC%EC%9D%B8";
+	   doc = Jsoup.connect(URL).get();
+	   
+	   
+	   
+
+	   
+	   
+	   
+	   
+	 
+	   /*try {
 		   tagName = string;
 		   System.out.println("태그 " + tagName + " 에 대해서 Twitter를 통해 찾는중 입니다.");
 		   tagSite = "https://www.twitter.com/search?q=%23" + tagName + "&src=typd&lang=ko";
+		   //tagSite="https://search.naver.com/search.naver?sm=tab_hty.top&where=news&query="+tagName;
 		   System.setProperty("webdriver.chrome.driver", driverLink);
 		   driver = new ChromeDriver();		   
-		   driver.manage().window().maximize();		  
+		  // driver.manage().window().maximize();	
 		   driver.get(tagSite);
 		   contextText = new BufferedWriter(new FileWriter(tagName + "'s Context(Twitter).txt"));
 		   
-		   Thread.sleep(10000);
+		   Thread.sleep(5000);
 	   } catch (InterruptedException e) {
 		   e.printStackTrace();
 	   } catch (IOException e) {
 		   e.printStackTrace();
-	   }
-	   System.out.println("6");
+	   }*/
+	   /*System.out.println("6");
 	   FullscrollDown(); //자동으로 스크론 내림
 	   System.out.println("sss");
 	   ReadHtml(); //HTML코드를 String 타입으로 받아옴
 	   System.out.println("Yyy");
 	   getContext(); //위의 String에서 원하는 태그를 찾아 내용을 파일에 작성
+	   */
 	}
+   
+   
 
-   public void ReadHtml() {
+public String getURL() {
+	return URL;
+}
+
+public void setURL(String uRL) {
+	URL = uRL;
+}
+
+public Document getDoc() {
+	return doc;
+}
+
+public void setDoc(Document doc) {
+	this.doc = doc;
+}
+
+   /*public void ReadHtml() {
 	   try {
 		   String pageSource = driver.getPageSource(); //페이지 소스(HTML)을 String 변수에 저장
 		   data = new String(pageSource.getBytes(), "UTF-8"); //utf-8로 인코딩
@@ -64,9 +102,9 @@ public class Twitter {
 		   //2000번 스크롤을 내림
 		   //2000번을 하는 이유는 2000번정도 스크롤을 내리면 크롬 브라우저 메모리가 거의 꽉 참
 		   //브라우저 메모리가 꽉 차면 웹 페이지가 뜨지 않고, 에러 발생
-		   for (int cnt = 0; cnt < 5; cnt++) {
+		   for (int cnt = 0; cnt < 10; cnt++) {
 			   jse.executeScript("window.scrollBy(0,1500)", "");  //스크롤 내림
-			   Thread.sleep(2000); //2초동안 멈춤
+			   Thread.sleep(500); //2초동안 멈춤
 		   }
 	   } catch (InterruptedException e) {
 		   e.printStackTrace();
@@ -104,6 +142,6 @@ public class Twitter {
 	   } catch (IOException er) {
 		   er.printStackTrace();
 	   }
-   }
+   }*/
 
 }
