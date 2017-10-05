@@ -10,16 +10,16 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.JavascriptExecutor;
+//import org.openqa.selenium.WebDriver;
+//import org.openqa.selenium.chrome.ChromeDriver;
 
 
 public class Twitter {
    /*private WebDriver driver;
    private String tagSite, tagName, data, contexts;
    private BufferedWriter contextText;
-   private String driverLink = "C:\\Users\\kingt\\Documents\\라이브러리 크롤러\\chromedriver.exe"; //chromedriver.exe 경로
+   private String driverLink = ".\\Web_programming\\chromedriver.exe"; //chromedriver.exe 경로
    */
 	protected String mainUrl;
 	protected String URL;

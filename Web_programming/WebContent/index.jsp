@@ -8,25 +8,40 @@
 <STYLE>
 
 #dvt{margin-top:70px; text-align:center; margin-bottom: 5px; width:100%; height:70px;padding:13px;font-size:70px;}
-#dvc{width:600px; height:500px; text-align:center;font-size:30px;font-style: bold; background-color: #FFD9FA;}
-#dvci{width:140px; height:500px; text-align:center;font-size:30px;font-style: italic; background-color: #E4F7BA;}
+#dvc{width:500px; height:500px; text-align:center;font-size:30px;font-style: italic;}
+#dvci{width:140px; height:500px; text-align:center;font-size:30px;font-style: italic;}
 #dvb{margin-top:20px; margin-bottom: 5px; width:100%; height:20px; text-align:center;padding:13px;font-size:70px;font-style: boid; font-size: 20px; font-style: italic; background-color: #EAEAEA}
 
 </STYLE>
 </head>
 <body>
+<script type="text/javascript">
+function check() {
+	if(f.search_con.value==""){
+		alert("검색할 내용을 입력하세요");
+		f.search_con.focus();
+		return false;
+	}
+	if(f.search_con.value==" "){
+		alert("공백으로 시작할 수 없습니다");
+		f.search_con.focus();
+		return false;
+	}
+	return true;
+}
+</script>
 <div id = "dvt"> <img src="Images/title_image.png"/></div>
 <br><br><br><br><br><br><br>
-<table border="1" align="center" >
+<table border="0" align="center" >
 	<tr>
 		<td> 
 			<div id = "dvc"> 출력화면 </div> 
 		</td> 	
 		<td>
-			<form action="push.jsp" method="get">		
+			<form name="f" action="push.jsp" method="get" onsubmit="return check()">		
 				<div id = "dvci"> 입력화면 <br>
-					<div><input type="text" name="search_con" value="" size="15%"></div>		
-					<div><input type="button" name="push_button" value="보내기"></div>
+					<input type="text" name="search_con" value="" size="15%">		
+					<input type="submit" name="push_button" value="찾기">
 				</div>
 			</form>
 		</td>
