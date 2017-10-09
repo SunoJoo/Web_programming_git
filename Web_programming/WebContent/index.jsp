@@ -1,10 +1,12 @@
+
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="EUC-KR"%>    
+<%@ page import="crawler.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title> 다 찾아드림</title>
+<title> Search</title>
 <STYLE>
 
 #dvt{margin-top:70px; text-align:center; margin-bottom: 5px; width:100%; height:70px;padding:13px;font-size:70px;}
@@ -13,8 +15,13 @@
 #dvb{margin-top:20px; margin-bottom: 5px; width:100%; height:20px; text-align:center;padding:13px;font-size:70px;font-style: boid; font-size: 20px; font-style: italic; background-color: #EAEAEA}
 
 </STYLE>
+
+<script>
+
+</script>
 </head>
 <body>
+
 <script type="text/javascript">
 function check() {
 	if(f.search_con.value==""){
@@ -35,15 +42,48 @@ function check() {
 <table border="0" align="center" >
 	<tr>
 		<td> 
-			<div id = "dvc"> 출력화면 </div> 
+			<div id = "dvc" style="overflow-y:auto"> 출력화면 	
+			<br>
+			<%			
+			String name = request.getParameter("category");
+			String[] aa = new String[10];
+			String[] bb = new String[15];
+			if(name==null)
+				out.print("");
+			else{				
+				Crawler_main cm = new Crawler_main(name);
+				
+				for(int i =0;i<cm.rtCrawlerData();i++)
+					out.println(cm.getCrawlerData()[i]);
+				
+							
+			}
+				
+			%>
+					
+			</div> 
 		</td> 	
 		<td>
-			<form name="f" action="push.jsp" method="get" onsubmit="return check()">		
+					
 				<div id = "dvci"> 입력화면 <br>
-					<input type="text" name="search_con" value="" size="15%">		
-					<input type="submit" name="push_button" value="찾기">
+				<form name="form_category" action="index.jsp" method="post" onsubmit="return check()">
+					<!--  <input type="text" name="search_con" value="" size="15%">		-->
+						<select name="category" size="7">
+							<option value="" selected>-- 선택 --</option>
+							<option value="society">사회</option>
+							<option value="politics">정치</option>
+							<option value="economic">경제</option>
+							<option value="foreign">국제</option>
+							<option value="culture">문화</option>
+							<option value="entertain">연예</option>
+							<option value="sports">스포츠</option>
+							<option value="digital">IT</option>
+													
+						</select>
+						<input type="submit" name="push_button" value="찾기">
+					</form>
 				</div>
-			</form>
+			
 		</td>
 	</tr>
 </table>
