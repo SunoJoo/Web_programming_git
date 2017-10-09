@@ -51,12 +51,10 @@ function check() {
 			if(name==null)
 				out.print("");
 			else{				
-				Crawler_main cm = new Crawler_main(name);
-				
-				for(int i =0;i<cm.rtCrawlerData();i++)
-					out.println(cm.getCrawlerData()[i]);
-				
-							
+				Crawler_main cm = new Crawler_main(name,10);
+				bb = cm.getData();
+				for(int i = 0; i<bb.length;i++)
+					out.print(bb[i]);				
 			}
 				
 			%>

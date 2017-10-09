@@ -2,5 +2,5 @@ package crawler;
 
 public interface Crawler_news {
 	
-public String[] crawlNewsData();
+public String[] crawlNewsData(String[] refs);
 }
