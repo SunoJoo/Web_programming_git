@@ -6,6 +6,8 @@ public class Crawler_parent {
 	 protected String[] crawlerData;
 	 protected String branch="";	
 	 protected String[] nextPages;
+	 protected static int searchRange;
+	 protected String urlTrue="";	
 	 
 	public String[] getCrawlerData() {
 		return crawlerData;

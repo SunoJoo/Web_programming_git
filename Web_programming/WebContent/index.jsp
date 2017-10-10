@@ -46,15 +46,25 @@ function check() {
 			<br>
 			<%			
 			String name = request.getParameter("category");
-			String[] aa = new String[10];
+			String[] crawlNewsPage = new String[10];
 			String[] bb = new String[15];
+			int thNum = 10;
 			if(name==null)
 				out.print("");
 			else{				
-				Crawler_main cm = new Crawler_main(name,10);
-				bb = cm.getData();
-				for(int i = 0; i<bb.length;i++)
-					out.print(bb[i]);				
+				Crawler_getaddr cg = new Crawler_getaddr();
+				crawlNewsPage = cg.crawlNewsPage(name,10);
+				File_manager fm = new File_manager();
+				fm.deleteFile(10);
+				Thread[] tr = new Thread[10];				
+				Crawler_main cm;		
+				for(int i = 0; i<tr.length;i++) {						
+					tr[i] = new Thread(new Crawler_main(crawlNewsPage[i],i,thNum));
+					tr[i].start();
+					out.println("tr"+(i+1)+" On");				
+				}			
+				
+				
 			}
 				
 			%>

@@ -1,6 +1,7 @@
 package crawler;
 
 
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,43 +10,27 @@ import java.io.PrintWriter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
-import jdk.jfr.events.FileWriteEvent;
 
 
 public class Crawler_main extends Crawler_parent implements Crawler_page_viewer, Crawler_workspace, Crawler_news, Runnable{
-	private String urlTrue="";	
+	
 	private String[] crawlList=null;
 	private String[] pageName=null;
 	private String[] data;
-	private static int searchRange;
-	
-
+	String branch;
 	int task = 0;
 	int offset = 0;
-	
-	public Crawler_main(String branch, int num) {
+	int thNum = 0;
+	public Crawler_main(String branch, int num, int thNum) {
 		// TODO Auto-generated constructor stub
-		super.branch = branch;
-		urlTrue=super.URL+super.branch;			
-		searchRange = num;
-		
-		crawlList = new String[10];		
-		nextPages = new String[num];
+		this.branch = branch;	
+		this.thNum = thNum;
+		urlTrue=super.URL+super.branch;				
+		crawlList = new String[10];				
 		pageName = new String[CRAWLLIST];
-		data = new String[CRAWLLIST];
-		
-		//BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("out.txt"),"MS949"));
-		//out.write(doc.text());
-		//out.close();
-		try {
-			nextPages=crawlNewsPage();			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}			
-		run();
+		data = new String[CRAWLLIST];		
+		task=num;
 		
 	}	
 	public String[] getData() {
@@ -57,24 +42,49 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		crawlList = crawlPageNumOne(nextPages[task]);
-		if(task>1)
-			crawlList = crawlPageNumOne(nextPages[task]);
-		task++;
-		pageName = crawlMainPage(crawlList[task]);
-		data = crawlNewsData(pageName);
-		exportFile(data);		
+		if(task==0) 
+			task_0_jop();	
+		if(task>0) 
+			task_1_jop();		
+	}	
+	
+	public void task_0_jop() {
+		data = crawlNewsData(branch);
+		exportFile(data);
+		System.out.println(branch);
+		crawlList = crawlPageNumOne(branch);
+		for(int i = 0; i<crawlList.length;i++) {
+			System.out.println(crawlList[i]);
+			pageName = crawlMainPage(crawlList[i]);
+			data = crawlNewsData(pageName);
+			exportFile(data);
+		}
 	}
 	
+	public void task_1_jop() {
+		data = crawlNewsData(branch);
+		exportFile(data);
+		System.out.println(branch);
+		crawlList = crawlPageNum(branch);			
+		for(int i = 0;i<crawlList.length;i++ ) {
+			System.out.println(crawlList[i]);
+			pageName = crawlMainPage(crawlList[i]);
+			data = crawlNewsData(pageName);
+			exportFile(data);
+			}	
+	}
 	public void exportFile(String[] data) {
 		String[] texts = new String[data.length];
 		texts = data;		
 		try {
-			FileWriter fw = new FileWriter("result.txt");
-			PrintWriter out = new PrintWriter(fw);
+			FileWriter fw = new FileWriter("result_thread "+(task+1)+".txt",true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			PrintWriter out = new PrintWriter(bw);
 			for(String line:texts)
 				out.print(line);
-			out.close();
+			bw.close();
+			fw.close();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,7 +100,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		Document doc; 
 		for(int i = 1; i<CRAWLPAGELIST;i++) {	
 			try {
-				doc = Jsoup.connect(ref).get();
+				doc = Jsoup.connect(ref).timeout(30000).get();
 				
 				Element ele = doc.select("span.inner_paging a").get(i);
 				String add = mainUrl+ele.attr("href");
@@ -109,7 +119,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		Document doc; 
 		for(int i = 0; i<CRAWLPAGELIST-1;i++) {	
 			try {
-				doc = Jsoup.connect(ref).get();
+				doc = Jsoup.connect(ref).timeout(30000).get();
 				
 				Element ele = doc.select("span.inner_paging a").get(i);
 				String add = mainUrl+ele.attr("href");
@@ -129,7 +139,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		Document doc; 
 		for(int i = 0; i<CRAWLLIST;i++) {
 				try {
-					doc = Jsoup.connect(ref).get();
+					doc = Jsoup.connect(ref).timeout(30000).get();
 					Element ele = doc.select("strong.tit_thumb>a").get(i);
 					String add = ele.attr("href");
 					datas[i] = add;	
@@ -150,7 +160,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		Document doc; 
 		for(int i = 0; i<CRAWLLIST;i++) {
 			try {
-				doc = Jsoup.connect(refs[i]).get();
+				doc = Jsoup.connect(refs[i]).timeout(30000).get();
 				data[i]=doc.text();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -160,27 +170,23 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		return data;
 	}
 	
-	public String[] crawlNewsPage() throws IOException {
-		String[] nextPage = new String[searchRange];	
-		nextPage[0] = urlTrue;	
-		String add="";
-		Document doc;
-		for(int i=1;i<searchRange;i++) {
-			doc = Jsoup.connect(nextPage[i-1]).get();
-			Element ele;
-			if(i==1) {
-				ele = doc.select("span.inner_paging a").get(9);
-				add = mainUrl+ele.attr("href");	
-			}
-			else {
-				ele = doc.select("span.inner_paging a").get(10);
-				add = mainUrl+ele.attr("href");	 
-			}
-			nextPage[i] = add;		
-			
-		}	
-		return nextPage;		
+	public String[] crawlNewsData(String refs) {
+		// TODO Auto-generated method stub
+		String[] data = new String[CRAWLLIST];
+		Document doc; 
+		for(int i = 0; i<CRAWLLIST;i++) {
+			try {
+				doc = Jsoup.connect(refs).timeout(30000).get();
+				data[i]=doc.text();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		   }	
+		return data;
 	}
+	
+	
 }
 
 
