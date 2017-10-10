@@ -2,13 +2,16 @@ package crawler;
 
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-
+import java.io.PrintWriter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import jdk.jfr.events.FileWriteEvent;
 
 
 public class Crawler_main extends Crawler_parent implements Crawler_page_viewer, Crawler_workspace, Crawler_news, Runnable{
@@ -41,11 +44,8 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}		
-		
-	
+		}			
 		run();
-		
 		
 	}	
 	public String[] getData() {
@@ -63,9 +63,24 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		task++;
 		pageName = crawlMainPage(crawlList[task]);
 		data = crawlNewsData(pageName);
-		for(int i = 0; i<data.length;i++) {
-			System.out.println(data[i]); //Å×½ºÆ® À¯´Ö
-			}
+		exportFile(data);		
+	}
+	
+	public void exportFile(String[] data) {
+		String[] texts = new String[data.length];
+		texts = data;		
+		try {
+			FileWriter fw = new FileWriter("result.txt");
+			PrintWriter out = new PrintWriter(fw);
+			for(String line:texts)
+				out.print(line);
+			out.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	
@@ -161,7 +176,8 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 				ele = doc.select("span.inner_paging a").get(10);
 				add = mainUrl+ele.attr("href");	 
 			}
-			nextPage[i] = add;				
+			nextPage[i] = add;		
+			
 		}	
 		return nextPage;		
 	}

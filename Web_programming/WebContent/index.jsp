@@ -75,8 +75,7 @@ function check() {
 							<option value="culture">문화</option>
 							<option value="entertain">연예</option>
 							<option value="sports">스포츠</option>
-							<option value="digital">IT</option>
-													
+							<option value="digital">IT</option>													
 						</select>
 						<input type="submit" name="push_button" value="찾기">
 					</form>
