@@ -14,7 +14,7 @@ import org.jsoup.nodes.Element;
 
 
 public class Crawler_main extends Crawler_parent implements Crawler_page_viewer, Crawler_workspace, Crawler_news, Runnable{
-	
+	// 스레드 작업 객체
 	private String[] crawlList=null;
 	private String[] pageName=null;
 	private String[] data;
@@ -40,7 +40,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		this.data = data;
 	}
 	@Override
-	public void run() {
+	public void run() { // Runnable 메소드 오버라이드
 		// TODO Auto-generated method stub
 		if(task==0) 
 			task_0_jop();	
@@ -48,7 +48,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 			task_1_jop();		
 	}	
 	
-	public void task_0_jop() {
+	public void task_0_jop() { // getaadr 에서 설명한 1번 페이지와 11번 이후의 페이지 포맷이 다른거 때문에 메소드를 2개 만듦
 		data = crawlNewsData(branch);
 		exportFile(data);
 		System.out.println(branch);
@@ -61,7 +61,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		}
 	}
 	
-	public void task_1_jop() {
+	public void task_1_jop() { //11번 이후의 페이지를 크롤링하는 메소드
 		data = crawlNewsData(branch);
 		exportFile(data);
 		System.out.println(branch);
@@ -73,7 +73,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 			exportFile(data);
 			}	
 	}
-	public void exportFile(String[] data) {
+	public void exportFile(String[] data) { // 파일 출력
 		String[] texts = new String[data.length];
 		texts = data;		
 		try {
@@ -95,7 +95,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 	
 	
 	@Override
-	public String[] crawlPageNum(String ref) {
+	public String[] crawlPageNum(String ref) { // getaddr에서 얻은 1,11,21...의 각 요소안에 페이지 번호 주소를 크롤링 ex) 1번페이지에는 총 11페이지까지 있으므로 1~10페이지의 주소가 반환됨
 		String[] datas = new String[CRAWLPAGELIST-1];		
 		Document doc; 
 		for(int i = 1; i<CRAWLPAGELIST;i++) {	
@@ -114,7 +114,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		return datas;		
 	}
 	
-	public String[] crawlPageNumOne(String ref) {
+	public String[] crawlPageNumOne(String ref) { // 포맷이 다른 1페이지를 크롤링 하기 위한 메소드 
 		String[] datas = new String[CRAWLPAGELIST-1];		
 		Document doc; 
 		for(int i = 0; i<CRAWLPAGELIST-1;i++) {	
@@ -134,7 +134,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 	}
 	
 	@Override
-	public String[] crawlMainPage(String ref) {
+	public String[] crawlMainPage(String ref) { // 각 페이지 안에 있는 15개의 기사 제목 href값을 리턴하는 메소드
 		String[] datas = new String[CRAWLLIST];
 		Document doc; 
 		for(int i = 0; i<CRAWLLIST;i++) {
@@ -154,7 +154,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 
 
 	@Override
-	public String[] crawlNewsData(String[] refs) {
+	public String[] crawlNewsData(String[] refs) { // crawlMainPage에서 받은 값을 이용해 해당 뉴스 텍스트 전체를 긁어오는 메소드
 		// TODO Auto-generated method stub
 		String[] data = new String[CRAWLLIST];
 		Document doc; 
@@ -170,7 +170,7 @@ public class Crawler_main extends Crawler_parent implements Crawler_page_viewer,
 		return data;
 	}
 	
-	public String[] crawlNewsData(String refs) {
+	public String[] crawlNewsData(String refs) { // crawlPageNum 메소드의 리턴값에는 1,11,21,31.. 에 대한 주소가 없어서 크롤링이 안되기에 임시방편으로 오버라이딩함 수정요망.
 		// TODO Auto-generated method stub
 		String[] data = new String[CRAWLLIST];
 		Document doc; 
